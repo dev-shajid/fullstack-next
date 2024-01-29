@@ -1,7 +1,9 @@
+import db from "@/lib/db"
 import { NextResponse } from "next/server"
 
 export async function GET() {
     try {
+        await db()
         const response = NextResponse.json({
             message: 'Logout Successful!',
             success:true,
