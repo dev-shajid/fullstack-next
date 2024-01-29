@@ -21,7 +21,7 @@ export default function SigIn() {
         let loadingPromise = toast.loading("Loading...")
         try {
             setIsLoading(true)
-            const res = await fetch('http://localhost:3000/api/auth/login', {
+            const res = await fetch('https://fullstack-next-beige.vercel.app/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

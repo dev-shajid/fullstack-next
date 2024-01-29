@@ -22,7 +22,7 @@ export default function SigIn() {
         let loadingPromise = toast.loading("Loading...")
         try {
             setIsLoading(true)
-            const res = await fetch('http://localhost:3000/api/auth/register', {
+            const res = await fetch('https://fullstack-next-beige.vercel.app/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
