@@ -1,35 +1,33 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const connection = {};
+const MONGODB_URL = process.env.MONGODB_URL;
 
-
-
-async function connect() {
-    try {
-        if (connection.isConnected) {
-            return;
-        }
-        if (mongoose.connections.length > 0) {
-            connection.isConnected = mongoose.connections[0].readyState;
-            if (connection.isConnected === 1) {
-                return;
-            }
-            await mongoose.disconnect();
-        }
-        const db = await mongoose.connect('mongodb+srv://shajib:shajib786@cluster0.yk68owb.mongodb.net/?retryWrites=true&w=majority');
-        connection.isConnected = db.connections[0].readyState;
-    } catch (error) {
-        console.log(error)
-    }
+if (!MONGODB_URL) {
+  throw new Error("Please define the DATABASE_URL environment variable inside .env.local");
 }
 
-async function disconnect() {
-    if (connection.isConnected) {
-        if (process.env.NODE_ENV === 'production') {
-            await mongoose.disconnect();
-            connection.isConnected = false;
-        }
-    }
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
-const db = { connect, disconnect };
+
+async function db() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
 export default db;
