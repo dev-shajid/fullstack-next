@@ -7,17 +7,17 @@ import db from "@/lib/db";
 export async function POST(req) {
     try {
         await db.connect()
-        const {email,password} = await req.json()
-        // console.log({email,password})
+        const {email,password:pass} = await req.json()
+        // console.log({email,pass})
 
-        const user = await User.findOne({ email })
+        const {password, ...user} = await User.findOne({ email })
         if (!user) throw new Error("User does not exist")
         console.log("user exists");
 
 
-        //check if password is correct
-        const validPassword = await bcryptjs.compare(password, user.password)
-        if (!validPassword) throw new Error("Invalid Password!")
+        //check if pass is correct
+        const validpass = await bcryptjs.compare(pass, password)
+        if (!validpass) throw new Error("Invalid pass!")
         // console.log(user);
 
         //create token data
@@ -32,6 +32,7 @@ export async function POST(req) {
 
         const response = NextResponse.json({
             message: "Login successful",
+            user,
             success: true,
         })
         response.cookies.set("token", token, {

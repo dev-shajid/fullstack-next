@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { Toaster } from "react-hot-toast";
+import ContextProvider from "@/context/ContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({ children }) {
           position="top-center"
           reverseOrder={false}
         />
-        <Nav />
-        {children}
+        <ContextProvider>
+          <Nav />
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );

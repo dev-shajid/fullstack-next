@@ -1,5 +1,6 @@
 'use client'
 
+import { useUserContext } from '@/context/ContextProvider';
 import axios from 'axios';
 // import useApi from '@/hook/useApi';
 import Link from 'next/link'
@@ -11,6 +12,7 @@ export default function SigIn() {
     const [isLoading, setIsLoading] = useState(false)
     const [userInfo, setUserInfo] = useState({ email: "shajid@gmail.com", password: "12345", })
     const router = useRouter()
+    const { user, dispatch } = useUserContext()
 
     function handleChange(e) {
         setUserInfo(pre => ({ ...pre, [e.target.name]: e.target.value }))
@@ -29,9 +31,10 @@ export default function SigIn() {
                 body: JSON.stringify(userInfo)
             })
             const data = await res.json()
-            console.log(res, data)
+            // console.log(res, data)
             if (res.status == 200) {
                 toast.success(data.message || "Login Successfully!", { id: loadingPromise })
+                dispatch({ type: 'ADD_USER', payload: data.user })
                 router.push('/')
             } else {
                 toast.error(data?.error || "Some error arised", { id: loadingPromise })

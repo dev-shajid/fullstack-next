@@ -1,5 +1,6 @@
 'use client'
 
+import { useUserContext } from '@/context/ContextProvider'
 // import useApi from '@/hook/useApi';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,6 +9,7 @@ import React, { useState } from 'react'
 export default function SigIn() {
     // const { isLoading, apiLogin } = useApi()
     const router = useRouter()
+    const { user, dispatch } = useUserContext()
     const [isLoading, setIsLoading] = useState(false)
     const [userInfo, setUserInfo] = useState({ name: "Mohammed Sajidul Islam", email: "shajid@gmail.com", password: "12345", })
 
@@ -32,7 +34,7 @@ export default function SigIn() {
             const data = await res.json()
             console.log(res, data)
             if (res.status == 200) {
-                
+                dispatch({ type: 'ADD_USER', payload: data.user })
                 toast.success(data.message || "Registered Successfully!", { id: loadingPromise })
                 router.push('/')
             } else {

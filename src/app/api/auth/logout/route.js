@@ -3,13 +3,13 @@ import { NextResponse } from "next/server"
 
 export async function GET() {
     try {
-        await db()
+        await db.connect()
         const response = NextResponse.json({
             message: 'Logout Successful!',
-            success:true,
+            success: true,
         })
-        response.cookies.set('token','', {
-            httpOnly:true, expires: new Date(0)
+        response.cookies.set('token', '', {
+            httpOnly: true, expires: new Date(0)
         })
         return response
     } catch (error) {

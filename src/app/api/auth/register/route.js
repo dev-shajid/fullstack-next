@@ -6,7 +6,7 @@ import db from "@/lib/db";
 
 export async function POST(req) {
     try {
-        await db()
+        await db.connect()
         const { name, email, password: pass } = await req.json()
         // console.log({name,email,pass})
 
@@ -22,7 +22,7 @@ export async function POST(req) {
         const response = NextResponse.json({
             message: "User created successfully!",
             success: true,
-            newUser
+            user:newUser
         })
 
         // console.log(newUser)
