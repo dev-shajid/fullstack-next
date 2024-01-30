@@ -32,6 +32,7 @@ export default function SigIn() {
             const data = await res.json()
             console.log(res, data)
             if (res.status == 200) {
+                
                 toast.success(data.message || "Registered Successfully!", { id: loadingPromise })
                 router.push('/')
             } else {
