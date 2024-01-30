@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'https://fullstack-next-beige.vercel.app'
 
 export const submitAddItemManagerForm = async (values) => {
     alert(JSON.stringify(values, null, 2))
@@ -13,6 +13,6 @@ export const submitTeacherForm = async (values) => {
 }
 
 const getAllUser = async () => {
-    const res = await fetch(`http://localhost:3000/api/user`)
+    const res = await fetch(`https://fullstack-next-beige.vercel.app/api/user`)
     return res.json()
 }
