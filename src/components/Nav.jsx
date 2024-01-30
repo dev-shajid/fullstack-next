@@ -4,25 +4,25 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useUserContext } from '@/context/ContextProvider';
-// import useApi from '@/hook/useApi';
+import useApi from '@/hook/useApi';
 
 export default function Nav() {
     const { user, dispatch } = useUserContext()
-    // const { apiLogout, isLoading } = useApi()
+    const { apiAuthUser, isLoading } = useApi()
 
     async function apiLogout(e) {
-        e.preventDefault()
-        // let loadingPromise = toast.loading("Loading...")
+        // e.preventDefault()
+        let loadingPromise = toast.loading("Loading...")
         try {
             // setIsLoading(true)
             const res = await fetch('https://fullstack-next-beige.vercel.app/api/auth/logout')
             const data = await res.json()
             // console.log({res, data})
             if (res.status == 200) {
-                // toast.success(data.message || "Logout Successfully!", { id: loadingPromise })
+                toast.success(data.message || "Logout Successfully!", { id: loadingPromise })
                 dispatch({ type: 'REMOVE_USER' })
             } else {
-                // toast.error(data?.error || "Some error arised", { id: loadingPromise })
+                toast.error(data?.error || "Some error arised", { id: loadingPromise })
             }
         } catch (error) {
             console.log(error)
@@ -32,28 +32,27 @@ export default function Nav() {
         }
     }
 
-    // const { apiLogout, isLoading } = useApi()
-    async function apiAuthUser() {
-        let loadingPromise = toast.loading("Loading...")
-        try {
-            // setIsLoading(true)
-            const res = await fetch('https://fullstack-next-beige.vercel.app/api/auth/authUser')
-            const data = await res.json()
-            // console.log({res, data})
-            if (res.status == 200) {
-                console.log(data)
-                dispatch({ type: 'ADD_USER', payload: data.user })
-                toast.success("Authorized Succesfully!", { id: loadingPromise })
-            } else {
-                toast.error(data?.error || "Not authorized, sign in please!", { id: loadingPromise })
-            }
-        } catch (error) {
-            console.log(error)
-        }
-        finally {
-            // setIsLoading(false)
-        }
-    }
+    // async function apiAuthUser() {
+    //     let loadingPromise = toast.loading("Loading...")
+    //     try {
+    //         // setIsLoading(true)
+    //         const res = await fetch('https://fullstack-next-beige.vercel.app/api/auth/authUser')
+    //         const data = await res.json()
+    //         // console.log({res, data})
+    //         if (res.status == 200) {
+    //             console.log(data)
+    //             dispatch({ type: 'ADD_USER', payload: data.user })
+    //             toast.success("Authorized Succesfully!", { id: loadingPromise })
+    //         } else {
+    //             toast.error(data?.error || "Not authorized, sign in please!", { id: loadingPromise })
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    //     finally {
+    //         // setIsLoading(false)
+    //     }
+    // }
 
     useEffect(() => {
         if (!user) apiAuthUser()

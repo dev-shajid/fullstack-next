@@ -7,7 +7,7 @@ export async function GET(req) {
     let decode = token ? await verifyToken(token) : null
     try {
         if (!decode) throw new Error("Unauthorized user! sigin again")
-        return NextResponse.json({ user: decode, success: true, }, { status: 200 })
+        return NextResponse.json({ message:"Authorized Succesfully!", user: decode, success: true, }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 400 })
     }
